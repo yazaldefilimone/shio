@@ -35,6 +35,7 @@ const posts = make({
   key: id => `user:${id}:posts`,
   fetcher: id => fetch(`/api/user/${id}/posts`).then(r => r.json()),
   dependsOn: id => [user.key(id)],
+  ttl: '5m+', // 5 minutes, resets on focus/mouse/keyboard
 })
 
 const { data } = useshio(posts, 1)
