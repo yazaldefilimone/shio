@@ -24,14 +24,14 @@ With just one hook, you can significantly simplify the data fetching logic in yo
 
 ```ts
 import { make } from 'shio'
-import { useshio } from 'shio/react'
+import { useShio } from 'shio/react'
 
 const user = make({
   key: id => `user:${id}`,
   fetcher: id => fetch(`/api/user/${id}`).then(r => r.json()),
 })
 
-const { data } = useshio(user, 1)
+const { data } = useShio(user, 1)
 
 <h1>{data.name}</h1>
 <button onClick={() => user.invalidate(1)}>refresh</button>
@@ -46,7 +46,7 @@ const posts = make({
   dependsOn: id => [user.key(id)],
 })
 
-const { data } = useshio(posts, 1)
+const { data } = useShio(posts, 1)
 
 <ul>{data?.map(p => <li key={p.id}>{p.title}</li>)}</ul>
 ```
@@ -91,7 +91,7 @@ inside react:
 
 ```tsx
 function profile({ id }: { id: number }) {
-  const { data, loading } = useshio(user, id);
+  const { data, loading } = useShio(user, id);
 
   async function onDelete() {
     await user.mutate(id);
