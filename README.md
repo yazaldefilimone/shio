@@ -118,10 +118,10 @@ methods:
 - `mutate(arg)` — run mutation and invalidate cache
 - `invalidate(arg)` — clear cache and revalidate
 
+
 ## Experiments with Shio + Drizzle direct fetcher
 
 ```ts
-// 1. basic user fetch direct from DB
 const user = createResource({
   key: (id: number) => `user:${id}`,
   fetcher: async (id: number) => {
@@ -143,7 +143,6 @@ const posts = createResource({
 
 ### Notes
 
-- Make sure to call `useResource` **only inside React Server Components** or backend code.
 - `db` is a server-only module — cannot run in the browser.
 - TTL and `dependsOn` help you with cache invalidation and reactive data flow.
 - You can test manual invalidation to force refetch.
