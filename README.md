@@ -73,3 +73,52 @@ TTL values:
 - `'5m+'` – 5 minutes, resets on click, focus, etc
 - `0` – no cache
 - `number` – milliseconds
+
+## unified api for fetch and mutate
+
+define fetching and mutating on same resource
+
+```ts
+const user = make({
+  key: (id) => `user:${id}`,
+  fetcher: (id) => fetch(`/api/user/${id}`).then((r) => r.json()),
+  mutate: (id) => fetch(`/api/user/${id}`, { method: "DELETE" }),
+  dependsOn: (id) => [user.key(id)],
+});
+```
+
+inside react:
+
+```tsx
+function profile({ id }: { id: number }) {
+  const { data, loading } = useshio(user, id);
+
+  async function onDelete() {
+    await user.mutate(id);
+    user.invalidate(id);
+  }
+
+  if (loading) return <p>loading...</p>;
+
+  return (
+    <div>
+      <h1>{data.name}</h1>
+      <button onClick={onDelete}>delete</button>
+    </div>
+  );
+}
+```
+
+outside react:
+
+```ts
+await user.fetch(5);
+await user.mutate(5);
+user.invalidate(5);
+```
+
+methods:
+
+- `fetch(arg)` — fetch data and cache
+- `mutate(arg)` — run mutation and invalidate cache
+- `invalidate(arg)` — clear cache and revalidate
