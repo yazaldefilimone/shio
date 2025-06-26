@@ -94,18 +94,13 @@ function profile({ id }: { id: number }) {
   const { data, loading } = useShio(user, id);
 
   async function onDelete() {
-    await user.mutate(id);
-    user.invalidate(id);
+    await user.mutate(id); // user.invalidate(id)
   }
 
   if (loading) return <p>loading...</p>;
 
-  return (
-    <div>
-      <h1>{data.name}</h1>
-      <button onClick={onDelete}>delete</button>
-    </div>
-  );
+  <h1>{data.name}</h1>
+  <button onClick={onDelete}>delete</button>
 }
 ```
 
