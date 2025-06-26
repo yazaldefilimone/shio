@@ -57,7 +57,7 @@ To manually refresh the user (and all resources depending on it):
 user.invalidate(1);
 ```
 
-## TTL (Time to Live)
+TTL in Shio defines how long cached data stays fresh, with optional reset on user activity (+ suffix).
 
 ```ts
 const user = make({
