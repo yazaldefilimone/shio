@@ -118,10 +118,6 @@ methods:
 - `mutate(arg)` — run mutation and invalidate cache
 - `invalidate(arg)` — clear cache and revalidate
 
-Claro! Aqui vai uma lista de experimentos simples para você testar esse modelo de usar o Drizzle direto no fetcher com Shio no Next.js (App Router), incluindo exemplos de cache, dependências e TTL.
-
----
-
 ## Experiments with Shio + Drizzle direct fetcher
 
 ```ts
