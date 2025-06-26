@@ -14,15 +14,15 @@ npm install shio
 ## usage
 
 ```tsx
-import { createResource } from 'shio'
-import { useResource } from 'shio/react'
+import { make } from 'shio'
+import { useshio } from 'shio/react'
 
-const user = createResource({
+const user = make({
   key: id => `user:${id}`,
   fetcher: id => fetch(`/api/user/${id}`).then(r => r.json()),
 })
 
-const { data } = useResource(user, 1)
+const { data } = useshio(user, 1)
 
 <h1>{data.name}</h1>
 <button onClick={() => user.invalidate(1)}>refresh</button>
@@ -31,13 +31,13 @@ const { data } = useResource(user, 1)
 ## with dependencies
 
 ```tsx
-const posts = createResource({
+const posts = make({
   key: id => `user:${id}:posts`,
   fetcher: id => fetch(`/api/user/${id}/posts`).then(r => r.json()),
   dependsOn: id => [user.key(id)],
 })
 
-const { data } = useResource(posts, 1)
+const { data } = useshio(posts, 1)
 
 <ul>{data?.map(p => <li key={p.id}>{p.title}</li>)}</ul>
 ```
