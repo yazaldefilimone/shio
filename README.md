@@ -117,3 +117,37 @@ methods:
 - `fetch(arg)` — fetch data and cache
 - `mutate(arg)` — run mutation and invalidate cache
 - `invalidate(arg)` — clear cache and revalidate
+
+Claro! Aqui vai uma lista de experimentos simples para você testar esse modelo de usar o Drizzle direto no fetcher com Shio no Next.js (App Router), incluindo exemplos de cache, dependências e TTL.
+
+---
+
+## Experiments with Shio + Drizzle direct fetcher
+
+```ts
+// 1. basic user fetch direct from DB
+const user = createResource({
+  key: (id: number) => `user:${id}`,
+  fetcher: async (id: number) => {
+    const [u] = await db.select().from("users").where("id", "=", id).limit(1);
+    return u;
+  },
+  ttl: "1m+",
+});
+
+const posts = createResource({
+  key: (userId: number) => `user:${userId}:posts`,
+  fetcher: async (userId: number) => {
+    return await db.select().from("posts").where("authorId", "=", userId);
+  },
+  dependsOn: (userId) => [user.key(userId)],
+  ttl: "1m",
+});
+```
+
+### Notes
+
+- Make sure to call `useResource` **only inside React Server Components** or backend code.
+- `db` is a server-only module — cannot run in the browser.
+- TTL and `dependsOn` help you with cache invalidation and reactive data flow.
+- You can test manual invalidation to force refetch.
